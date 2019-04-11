@@ -397,12 +397,12 @@ defmodule Plug.Debugger do
     |> h
   end
 
-  @radius 5
+  @radius 10
 
   defp get_snippet(file, line) do
     if File.regular?(file) and is_integer(line) do
       to_discard = max(line - @radius - 1, 0)
-      lines = File.stream!(file) |> Stream.take(line + 5) |> Stream.drop(to_discard)
+      lines = File.stream!(file) |> Stream.take(line + @radius) |> Stream.drop(to_discard)
 
       {first_five, lines} = Enum.split(lines, line - to_discard - 1)
       first_five = with_line_number(first_five, to_discard + 1, false)
